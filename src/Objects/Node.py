@@ -49,16 +49,17 @@ class Node:
     # be, and set 3 random values of x, y and z from the different ranges as the new position of this node,
     # as well as setting the boolean pos to True
     def setlimitedrandompos(self, minx: float, miny: float, minz: float, maxx: float, maxy: float, maxz: float):
-        self.x = random.randrange(minx, maxx)
-        self.y = random.randrange(miny, maxy)
-        self.z = random.randrange(minz, maxz)
+        self.x = random.uniform(minx, maxx)
+        self.y = random.uniform(miny, maxy)
+        self.z = random.uniform(minz, maxz)
         self.pos = True
 
     # This function return a string representation of this object by the following format:
     # (i): (x, y, z)
     # Where i is the key of the node, and x, y, z is the components in the coordinate vector
     def __str__(self) -> str:
-        return "(", self.key, "): (", self.x, ",", self.y, ",", self.z, ")"
+        return "(".join(str(self.key)).join("): (").join(str(self.x)).join(",")\
+            .join(str(self.y)).join(",").join(str(self.z)).join(")")
 
     # This functipn get an object and compare it to this Node, if the object is not a node, then we will return
     # False immediately, otherwise we will check if all of the properties are equal, if they are we will return
@@ -66,14 +67,14 @@ class Node:
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, Node):
             return False
-        if (__o.key == self.key and __o.x == self.x and __o.y == self.y and __o.z == self.z):
+        if __o.key == self.key and (__o.x == self.x) and (__o.y == self.y) and (__o.z == self.z):
             return True
         return False
 
+    # This function calculates and return the distance between this node and the input node
     def distance(self, o):
-        dx = (self.x-o.x)**2
-        dy = (self.y-o.y)**2
-        dz = (self.z-o.z)**2
+        dx = (self.x - o.x) ** 2
+        dy = (self.y - o.y) ** 2
+        dz = (self.z - o.z) ** 2
         from math import sqrt
-        return sqrt(dx+dy+dz)
-
+        return sqrt(dx + dy + dz)
