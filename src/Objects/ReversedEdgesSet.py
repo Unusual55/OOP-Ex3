@@ -37,3 +37,7 @@ class ReversedEdgesSet:
     # This function remove every element in the set
     def clear_set(self):
         return self.set.clear()
+
+    # This function return how many elements there are in the set
+    def __len__(self):
+        return len(self.set)
