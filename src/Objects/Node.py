@@ -9,18 +9,40 @@ order to know if the node has a position, if it does, then pos will become true,
 class Node:
     # Regular constructor which accept 4 parameters and set them as this object properties, pos will become true
     # since we get the coordinates values as inputs.
-    def __init__(self, id: int, x: float, y: float, z: float) -> None:
-        self.key = id
-        self.x = x
-        self.y = y
-        self.z = z
-        self.pos = True
+    def __init__(self, *args) -> None:
+        if len(args) == 4:
+            if isinstance(args[0], int):
+                self.key = args[0]
+            else:
+                raise Exception("key is not int")
+            if isinstance(args[1], float):
+                self.x = args[1]
+            else:
+                raise Exception("x is not float")
+            if isinstance(args[2], float):
+                self.y = args[2]
+            else:
+                raise Exception("y is not float")
+            if isinstance(args[3], float):
+                self.z = args[3]
+            else:
+                raise Exception("z is not float")
+            self.pos = True
+        elif len(args) == 1:
+            if isinstance(args[0], int):
+                self.key = args[0]
+                self.pos = False
+            else:
+                raise Exception("The id is not int")
+        else:
+            raise Exception("No inputs was entered")
 
     # Non-Position constructor, which accept only one parameter which is the key of the new node, pos will become
     # false since the coordinates does not exist at the moment
-    def __init__(self, id: int) -> None:
-        self.key = id
-        self.pos = False
+    # @classmethod
+    # def __init__(self, key: int) -> None:
+    #     self.key = key
+    #     self.pos = False
 
     # This function return the key of the node
     def getKey(self):
@@ -34,12 +56,15 @@ class Node:
     # This function check if the node has it's x,y,z coordinates, if it does, the function will return a tuple
     # (x, y, z), otherwise it will return None
     def getpos(self):
-        if self.checkpos:
-            return (self.x, self.y, self.z)
+        if self.checkpos():
+            return self.x, self.y, self.z
+        else:
+            return None
 
     # This function get 3 floats numbers as inputs and set them as the new x, y, z coordinates, as well as
     # setting the boolean pos to True
     def setpos(self, x: float, y: float, z: float):
+        if self.pos: return
         self.x = x
         self.y = y
         self.z = z
@@ -58,8 +83,8 @@ class Node:
     # (i): (x, y, z)
     # Where i is the key of the node, and x, y, z is the components in the coordinate vector
     def __str__(self) -> str:
-        return "(".join(str(self.key)).join("): (").join(str(self.x)).join(",")\
-            .join(str(self.y)).join(",").join(str(self.z)).join(")")
+        ret = "("+ str(self.key)+ "): (" + str(self.x)+ ", "+ str(self.y)+ ", "+ str(self.z)+ ")"
+        return ret
 
     # This functipn get an object and compare it to this Node, if the object is not a node, then we will return
     # False immediately, otherwise we will check if all of the properties are equal, if they are we will return
@@ -78,3 +103,24 @@ class Node:
         dz = (self.z - o.z) ** 2
         from math import sqrt
         return sqrt(dx + dy + dz)
+
+    # This function return the X value of the node
+    def get_x(self):
+        if self.pos:
+            return self.x
+        else:
+            return None
+
+    # This function return the Y value of the node
+    def get_y(self):
+        if self.pos:
+            return self.y
+        else:
+            return None
+
+    # This function return the Z value of the node
+    def get_z(self):
+        if self.pos:
+            return self.z
+        else:
+            return None
