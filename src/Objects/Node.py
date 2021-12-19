@@ -59,7 +59,7 @@ class Node:
         if self.checkpos():
             return self.x, self.y, self.z
         else:
-            return None
+            return None, None, None
 
     # This function get 3 floats numbers as inputs and set them as the new x, y, z coordinates, as well as
     # setting the boolean pos to True
@@ -124,3 +124,6 @@ class Node:
             return self.z
         else:
             return None
+
+    def __hash__(self):
+        return hash(str(self))

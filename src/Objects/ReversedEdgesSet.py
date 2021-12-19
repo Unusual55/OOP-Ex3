@@ -41,3 +41,6 @@ class ReversedEdgesSet:
     # This function return how many elements there are in the set
     def __len__(self):
         return len(self.set)
+
+    def __iter__(self):
+        return iter(self.set)

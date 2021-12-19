@@ -42,3 +42,7 @@ class Edge:
         if not isinstance(other, Edge):
             return False
         return (other.src == self.src) and (other.dest == self.dest) and (other.w == self.w)
+
+    def __hash__(self):
+        return hash(str(self))
+

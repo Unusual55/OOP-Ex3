@@ -37,7 +37,7 @@ class TestNode(TestCase):
                 nodes.append(n)
         for i in range(20):
             if not nodes[i].checkpos():
-                self.assertEquals(None, nodes[i].getpos())
+                self.assertEquals((None, None, None), nodes[i].getpos())
             else:
                 ni = nodes[i]
                 tup = (ni.x, ni.y, ni.z)
