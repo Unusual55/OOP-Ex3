@@ -83,7 +83,7 @@ class Node:
     # (i): (x, y, z)
     # Where i is the key of the node, and x, y, z is the components in the coordinate vector
     def __str__(self) -> str:
-        ret = "("+ str(self.key)+ "): (" + str(self.x)+ ", "+ str(self.y)+ ", "+ str(self.z)+ ")"
+        ret = "(" + str(self.key) + "): (" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + ")"
         return ret
 
     # This functipn get an object and compare it to this Node, if the object is not a node, then we will return

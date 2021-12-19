@@ -20,6 +20,8 @@ vertices, we implemented it as dictionary whrer the key of the node is the key, 
  to reduce the time complexity of any search, add or remove from the set to O(1), to reduce the space complexity
  by keeping only the keys of the nodes instead of the edges, and of course prevent any case of duplicate edges in
  the graph"""
+
+
 class DiGraph(GraphInterface):
 
     def __init__(self):
@@ -31,14 +33,17 @@ class DiGraph(GraphInterface):
         self.mc = 0
 
     """This function counts and return how many nodes there are in the graph"""
+
     def v_size(self) -> int:
         return self.nodecouter
 
     """This function counts and return how many edges there are in the graph"""
+
     def e_size(self) -> int:
         return self.edgecounter
 
     """This function counts and return how many changes the graph has been through since the object created"""
+
     def get_mc(self) -> int:
         return self.mc
 
@@ -49,8 +54,9 @@ class DiGraph(GraphInterface):
     2. The weight is a non negative real number
     3. Both of the input keys are non negative integers
     4. The edge is not in the graph already"""
+
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if id1 not in self.nodes.keys() or id2 not in self.nodes.keys() or id1 == id2 or weight <= 0 or id1<0 or id2<0:
+        if id1 not in self.nodes.keys() or id2 not in self.nodes.keys() or id1 == id2 or weight <= 0 or id1 < 0 or id2 < 0:
             return False
         e = Edge(id1, id2, weight)
         if id1 in self.nodes.keys() and id2 in self.nodes.keys() and e in self.outEdges.get(id, {}).values():
@@ -75,6 +81,7 @@ class DiGraph(GraphInterface):
     1. All of the components in the coordination vector are valid floats
     2. The input key is a non negative integer
     3. There is no node with the same key in the graph"""
+
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         for coor in pos:
             if not isinstance(coor, float):
@@ -95,6 +102,7 @@ class DiGraph(GraphInterface):
      the edgecounter.
      The function will also remove any empty dictionary or set. After the function finished to remove the edges, it
      will update the mc and the nodecounter."""
+
     def remove_node(self, node_id: int) -> bool:
         removed = self.nodes.pop(node_id)
         if removed is not None:
@@ -124,6 +132,7 @@ class DiGraph(GraphInterface):
     2. The source node's dictionary in outEdges is exist, which means it's not empty
     The function will remove the edge from outEdges and the key from the set in inEdges, it will update the
     edgecounter and the mc as well."""
+
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         if node_id1 not in self.nodes.keys() or node_id2 not in self.nodes.keys() or node_id1 not in self.outEdges.keys():
             return False
@@ -136,6 +145,7 @@ class DiGraph(GraphInterface):
 
     """This function return a dictionary which contain all of the nodes in the graph in the following format:
     dict[key] = Node, where key is the key of the node and Node is the Node object"""
+
     def get_all_v(self) -> dict:
         return self.nodes.copy()
 
@@ -143,6 +153,7 @@ class DiGraph(GraphInterface):
     contain it's in edges. The function use the keys in the ReversedEdgesSet to get the needed edges from outEdges
     and return a dictionary which contain the in edges by the following format:
     dict[key] = weight, where key is the key of the the destenation node and weight is the weight of the edge"""
+
     def all_in_edges_of_node(self, id1: int) -> dict:
         ret = {}
         if id1 not in self.nodes.keys(): return ret
@@ -153,6 +164,7 @@ class DiGraph(GraphInterface):
 
     """This function get one integer input which represent the key of a node we would like to get a dictionary which
      conatin all of the out edges that start from it, the function will return the internal dictionary in outEdges"""
+
     def all_out_edges_of_node(self, id1: int) -> dict:
         ret = {}
         if id1 in self.nodes.keys():
