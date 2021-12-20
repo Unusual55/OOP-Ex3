@@ -1,5 +1,5 @@
 import random
-
+import json
 """ This object represent a vertex in the graph. Every vertex has it's own unique id, which we implemented it as
 key and  3 real number coordinates x,y,z which represent it's location in a 3 dimensional space.
 Since we could get a Node who don't have any coordinates, we are using a boolean variable which we call pos in
@@ -32,6 +32,9 @@ class Node:
             if isinstance(args[0], int):
                 self.key = args[0]
                 self.pos = False
+                self.x = None
+                self.y = None
+                self.z = None
             else:
                 raise Exception("The id is not int")
         else:
@@ -127,3 +130,10 @@ class Node:
 
     def __hash__(self):
         return hash(str(self))
+
+    def node_to_dict(self):
+        info = dict()
+        info["id"] = self.key
+        if self.checkpos():
+            info["pos"] = str(self.x) + "," + str(self.y) + "," + str(self.z)
+        return info

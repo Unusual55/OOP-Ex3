@@ -83,16 +83,27 @@ class DiGraph(GraphInterface):
     3. There is no node with the same key in the graph"""
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
+        flag = True
+        empty = False
         for coor in pos:
             if not isinstance(coor, float):
+                flag = False
+        if flag == False and pos[0] is None and pos[1] is None and pos[2] is None:
+            flag = True
+            empty = True
+        if flag:
+            if empty:
+                n = Node(node_id)
+            else:
+                n = Node(node_id, pos[0], pos[1], pos[2])
+            if node_id in self.nodes or node_id < 0:
                 return False
-        n = Node(node_id, pos[0], pos[1], pos[2])
-        if node_id in self.nodes or node_id < 0:
+            self.nodes[node_id] = n
+            self.nodecouter += 1
+            self.mc += 1
+            return True
+        else:
             return False
-        self.nodes[node_id] = n
-        self.nodecouter += 1
-        self.mc += 1
-        return True
 
     """This function get an integer input which represent a key of a node we would like to delete. The function will
     proceed to the delete process if and only if the input is a valid key of a node in the graph.
@@ -156,7 +167,8 @@ class DiGraph(GraphInterface):
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         ret = {}
-        if id1 not in self.nodes.keys(): return ret
+        if id1 not in self.nodes.keys():
+            return ret
         for src in self.inEdges.get(id1, ReversedEdgesSet).get_keys():
             e = self.outEdges.get(src, {}).get(id1, Edge)
             ret[src] = e.get_weight()
@@ -171,3 +183,22 @@ class DiGraph(GraphInterface):
             for id2 in self.outEdges.get(id1, {}).keys():
                 ret[id2] = self.outEdges.get(id1, {}).get(id2, Edge).get_weight()
         return ret
+
+    def __eq__(self, other):
+        if not isinstance(other, GraphInterface):
+            return False
+        mynodes = self.get_all_v()
+        othernodes = other.get_all_v()
+        if not mynodes.__eq__(othernodes):
+            return False
+        for node in mynodes.values():
+            src = node.getKey()
+            myinedges = self.all_in_edges_of_node(src)
+            otherinedges = other.all_in_edges_of_node(src)
+            if not myinedges.__eq__(otherinedges):
+                return False
+            myoutedges = self.all_out_edges_of_node(src)
+            otheroutedges = self.all_out_edges_of_node(src)
+            if not myoutedges.__eq__(otheroutedges):
+                return False
+        return True

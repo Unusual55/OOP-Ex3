@@ -3,6 +3,7 @@
      source of the edge and v is the destenation of the edge.
      Since the Graph is Directed Weighted Graph, then every edge is unique: (u,v) is different than
      (v,u), and every edge have a weight"""
+import json
 
 
 class Edge:
@@ -45,3 +46,10 @@ class Edge:
 
     def __hash__(self):
         return hash(str(self))
+
+    def edge_to_dict(self):
+        info = dict()
+        info["src"] = self.src
+        info["w"] = self.w
+        info["dest"] = self.dest
+        return info
