@@ -186,11 +186,11 @@ class GraphAlgo(GraphAlgoInterface):
         visited = set()
         pq = []
         distance[src] = 0
-        heapq.heappush(0, src)
+        heapq.heappush(pq, (0, src))
         while pq:
             node = heapq.heappop(pq)
             visited.add(node)
-            for neighbor, weight in self.g.all_out_edges_of_node().items():
+            for neighbor, weight in self.g.all_out_edges_of_node(node).items():
                 if neighbor in visited:
                     continue
                 newdist = distance.get(node) + weight
@@ -231,7 +231,7 @@ class GraphAlgo(GraphAlgoInterface):
         for key in nodes.keys():
             if minid == -1:
                 minid = key
-            dist = self.Dijkstra_distance(key)
+            dist = self.dijkstra_distance(key)
             vmax = float('-inf')
             for d in dist.values():
                 vmax = max(d, vmax)
