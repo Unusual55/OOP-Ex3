@@ -66,6 +66,7 @@ class Visual:
                                                                             facecolor='r', shrinkA=0, shrinkB=0))
         center = self.g.nodes.get(key, Node).getpos()
         self.ax.scatter(center[0], center[1], c='g', edgecolor='r')
+        return key
 
     def draw_graph_SP(self, id1: int, id2: int):
         ga = GraphAlgo(self.g)
@@ -88,8 +89,7 @@ class Visual:
             self.ax.scatter(dest.get_x(), dest.get_y(), c='yellow')
             xy, xytext = [src.get_x(), src.get_y()], [dest.get_x(), dest.get_y()]
             self.ax.annotate("", xy=xy, xytext=xytext, arrowprops=dict(arrowstyle="<|-", edgecolor='darkorange',
-                                                                        facecolor='darkorange', shrinkA=0, shrinkB=0),
-                              annotation_clip=True)
+                                    facecolor='darkorange', shrinkA=0, shrinkB=0),annotation_clip=True)
             src = dest
 
     def draw_graph_TSP(self, cnodes: List[int]):
@@ -122,7 +122,7 @@ class Visual:
             self.ax.scatter(pos[0], pos[1], c='b')
 
     def add_edge(self, src: int, dest: int, weight: float):
-        if self.add_edge(src, dest, weight):
+        if self.g.add_edge(src, dest, weight):
             snode = self.g.nodes.get(src, Node)
             dnode = self.g.nodes.get(dest, Node)
             x1, x2, y1, y2 = snode.get_x(), dnode.get_x(), snode.get_y(), dnode.get_y()

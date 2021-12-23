@@ -32,5 +32,4 @@ class GuiPanel(tk.Frame):
         canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
         parent.config(menu=menubar)
 
-
 GuiPanel(tk.Tk())
