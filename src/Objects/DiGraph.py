@@ -167,8 +167,9 @@ class DiGraph(GraphInterface):
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         ret = {}
-        if id1 not in self.nodes.keys():
+        if id1 not in self.nodes.keys() or id1 not in self.inEdges.keys():
             return ret
+
         for src in self.inEdges.get(id1, ReversedEdgesSet).get_keys():
             e = self.outEdges.get(src, {}).get(id1, Edge)
             ret[src] = e.get_weight()

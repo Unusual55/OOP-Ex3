@@ -2,12 +2,13 @@ import tkinter as tk
 from tkinter import ttk as ttk
 from tkinter import simpledialog
 
-from matplotlib.figure import Figure
+from matplotlib.pyplot import Figure
 
 from Objects.DiGraph import DiGraph
 from Visual import Visual
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from Objects.GraphAlgo import GraphAlgo
+
 
 
 class PMenuBar(tk.Menu):
@@ -25,7 +26,7 @@ class PMenuBar(tk.Menu):
         edit.add_command(label="Add Node", command=self.add_node)
         edit.add_command(label="Add Edge", command=self.add_edge)
         edit.add_command(label="Remove Node", command=self.remove_node)
-        edit.add_command(label="Remove Edge")
+        edit.add_command(label="Remove Edge", command=self.remove_edge)
 
         algo = tk.Menu(self, tearoff=False)
         algo.add_command(label="Center Point", command=self.center)
@@ -84,7 +85,7 @@ class PMenuBar(tk.Menu):
 
     def new_graph(self):
         self.vision.g = DiGraph()
-        self.f.clear()
+        self.vision.ax.clear()
         self.vision.draw_graph()
 
     def center(self):
@@ -131,3 +132,19 @@ class PMenuBar(tk.Menu):
                                                                " to remove")
         if key in self.vision.g.nodes.keys():
             self.vision.remove_node(key)
+
+    def remove_edge(self):
+        src = simpledialog.askinteger(title="Source Entry", prompt="Enter the source id")
+        if src not in self.vision.g.nodes.keys():
+            simpledialog.messagebox.showerror(title="Error", message="The key you entered doesn't exist")
+            return
+        dest = simpledialog.askinteger(title="Destenation Entry", prompt="Enter the destenation id")
+        if dest in self.vision.g.nodes.keys() and self.vision.g.outEdges.get(src, {}).get(dest) is not None:
+            simpledialog.messagebox.showerror(title="Error", message="The key you entered doesn't exist or"
+                                                                     " The edge already exists")
+            return
+        self.vision.remove_edge(src, dest)
+
+    def draw(self):
+        self.f.clear()
+        self.canvas.draw_idle()
