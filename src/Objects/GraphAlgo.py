@@ -368,7 +368,10 @@ class GraphAlgo(GraphAlgoInterface):
                 if distance.get(nextnode) < currmindist:
                     nextid = nextnode
                     currmindist = distance.get(nextnode)
-            tsp_path.extend(self.dijkstra_path(path, curr, nextid))
+            tspath = self.dijkstra_path(path, curr, nextid)
+            if len(tsp_path) > 0 and tspath[0] == tsp_path[-1]:
+                tspath.pop(0)
+            tsp_path.extend(tspath)
             curr = nextid
             currdist += currmindist
             distance = dijkstree.get(curr, ())[0]
