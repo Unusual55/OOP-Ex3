@@ -13,6 +13,8 @@ from collections import defaultdict
 # from heapq import *
 import heapq
 from collections import defaultdict
+from matplotlib.pyplot import Figure
+import matplotlib.pyplot as plt
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -54,16 +56,47 @@ class GraphAlgo(GraphAlgoInterface):
         min_y, max_y = float('inf'), float('-inf')
         min_z, max_z = float('inf'), float('-inf')
         keys = set()
+        xlist, ylist = [], []
         for node in vdict.values():
             if node.checkpos():
                 min_x, max_x = min(min_x, node.get_x()), max(max_x, node.get_x())
-                min_y, max_x = min(min_y, node.get_y()), max(max_y, node.get_y())
+                xlist.append(node.get_x())
+                min_y, max_y = min(min_y, node.get_y()), max(max_y, node.get_y())
+                ylist.append(node.get_y())
                 min_z, max_z = min(min_z, node.get_z()), max(max_z, node.get_z())
             else:
                 keys.add(node.getKey())
+        minfinity = min_x == float('inf') and min_y == float('inf') and min_z == float('inf')
+        maxfinity = max_x == float('-inf') and max_y == float('-inf') and max_z == float('-inf')
         for i in keys:
-            self.g.nodes.get(i, Node).setlimitedrandompos(minx=min_x, miny=min_y, minz=min_z,
-                                                          maxx=max_x, maxy=max_y, maxz=max_z)
+            if not minfinity and not maxfinity:
+                self.g.nodes.get(i, Node).setlimitedrandompos(minx=min_x, miny=min_y, minz=min_z,
+                                                              maxx=max_x, maxy=max_y, maxz=max_z)
+                node = self.g.nodes.get(i, Node)
+                xlist.append(node.get_x())
+                ylist.append(node.get_y())
+            else:
+                min_x, min_y, min_z = 0, 0, 0
+                max_x, max_y, max_z = 10, 10, 10
+                self.g.nodes.get(i, Node).setlimitedrandompos(minx=min_x, miny=min_y, minz=min_z,
+                                                              maxx=max_x, maxy=max_y, maxz=max_z)
+                node = self.g.nodes.get(i, Node)
+                xlist.append(node.get_x())
+                ylist.append(node.get_y())
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.scatter(xlist, ylist, c='b')
+        for src, node in self.g.nodes.items():
+            x1, y1 = node.get_x(), node.get_y()
+            ax.scatter(x1, y1, c='b', picker=5, label=str(src))
+            for dest in self.g.all_out_edges_of_node(src).keys():
+                dnode = self.g.nodes.get(dest, Node)
+                x2, y2 = dnode.get_x(), dnode.get_y()
+                xy, xytext = [x1, y1], [x2, y2]
+                ax.annotate("", xy=xy, xytext=xytext, arrowprops=dict(arrowstyle="<|-", edgecolor='k',
+                                                                           facecolor='r', shrinkA=0, shrinkB=0))
+        plt.show()
+
 
     """This function get a string input which represent the path to the json file we would like to load.
     The function will check if the path is valid and the file indeed exist, if it's not, the function won't
@@ -145,9 +178,14 @@ class GraphAlgo(GraphAlgoInterface):
         if id1 not in self.g.get_all_v() or id2 not in self.g.get_all_v() or id1 == id2:
             return -1, []
         dijkstra_output = self.dijkstra(id1)
+        if dijkstra_output == (float('inf'), []):
+            return dijkstra_output
         prevs = dijkstra_output[1]
         dists = dijkstra_output[0]
+        if id2 not in dists:
+            return float('inf'), []
         distance = dists.get(id2)
+        path = []
         path = self.dijkstra_path(prevs, id1, id2)
         return distance, path
 
@@ -163,6 +201,8 @@ class GraphAlgo(GraphAlgoInterface):
         pq = []
         distance[src] = 0
         heapq.heappush(pq, (0, src))
+        if len(self.g.all_out_edges_of_node(src)) == 0:
+            return float('inf'), []
         while pq:
             s = heapq.heappop(pq)
             node, dist = s[1], s[0]
@@ -187,15 +227,19 @@ class GraphAlgo(GraphAlgoInterface):
         pq = []
         distance[src] = 0
         heapq.heappush(pq, (0, src))
+        if len(self.g.all_out_edges_of_node(src)) == 0:
+            return float('inf'), []
         while pq:
-            node = heapq.heappop(pq)
+            s = heapq.heappop(pq)
+            node, dist = s[1], s[0]
             visited.add(node)
             for neighbor, weight in self.g.all_out_edges_of_node(node).items():
                 if neighbor in visited:
                     continue
-                newdist = distance.get(node) + weight
-                if distance.get(neighbor) > newdist:
+                newdist = dist + weight
+                if distance[neighbor] > newdist:
                     distance[neighbor] = newdist
+                    heapq.heappush(pq, (newdist, neighbor))
         return distance
 
     """This function get two integer inputs which represent the source and the destenation vertices which
@@ -232,6 +276,8 @@ class GraphAlgo(GraphAlgoInterface):
             if minid == -1:
                 minid = key
             dist = self.dijkstra_distance(key)
+            if len(dist) == 2:
+                return
             vmax = float('-inf')
             for d in dist.values():
                 vmax = max(d, vmax)
@@ -307,7 +353,7 @@ class GraphAlgo(GraphAlgoInterface):
     #TODO: use profiler to improve performance
     def easy_tsp_v3(self, src: int, node_set: set[int], dijkstree: dict):
         curr, currdist = src, 0
-        distance, path = dijkstree.get(curr, ())[0], dijkstree.get(curr, ())[1]
+        distance, path = dijkstree.get(curr, ())
         visited = set()
         tsp_path = []
         while len(visited) != len(node_set) - 1:

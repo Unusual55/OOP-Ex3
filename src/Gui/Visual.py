@@ -45,6 +45,7 @@ class Visual:
                 return
             if key in self.edgestack:
                 self.remove_node(key)
+                self.edgestack = []
                 return
             self.edgestack.append(key)
             if len(self.edgestack) == 2:

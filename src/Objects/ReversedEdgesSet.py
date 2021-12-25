@@ -10,7 +10,7 @@ and edges from the graph, as well as the space complexity, since we are keep onl
 
 class ReversedEdgesSet:
     # This constructor get no input and create an empty set
-    def __init__(self, ):
+    def __init__(self):
         self.set = set()
 
     # This function get one integer input which is the key of the source node we want to add, and add

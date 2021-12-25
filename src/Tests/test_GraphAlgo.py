@@ -8,6 +8,7 @@ from Objects.GraphAlgo import GraphAlgo
 # from api.GraphInterface import GraphInterface
 # from api.GraphAlgoInterface import GraphAlgoInterface
 from Objects.GraphObjectsGenerator import GraphObjectsGenerator
+import matplotlib.pyplot as plt
 
 
 class TestGraphAlgo(TestCase):
@@ -18,14 +19,14 @@ class TestGraphAlgo(TestCase):
         gener = GraphObjectsGenerator()
         g = gener.generate_graph(20, 0)
         ga = GraphAlgo(g)
-        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\my_graph")
+        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_graph")
         emptynodes = gener.generate_empty_nodes(5)
         i = 0
         for empty in emptynodes:
             g.add_node(20 + i, empty)
             i += 1
         ga.g = g
-        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\my_NoneIncluded_graph")
+        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_NoneIncluded_graph")
         emptygraph = DiGraph()
         emptygraphnodes = gener.generate_empty_nodes(50)
         i = 0
@@ -33,8 +34,8 @@ class TestGraphAlgo(TestCase):
             emptygraph.add_node(i, e)
             i += 1
         ga.g = emptygraph
-        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\my_empty_graph")
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\my_graph.json")
+        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_empty_graph")
+        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_graph.json")
 
     def test_shortest_path(self):
         g = DiGraph()
@@ -70,25 +71,16 @@ class TestGraphAlgo(TestCase):
             i += 1
         vdict = ga.get_graph().get_all_v()
         for i in range(20, 24):
-            self.assertEquals(False, vdict.get(i).checkpos())
+            self.assertEqual(False, vdict.get(i).checkpos())
         ga.plot_graph()
         for i in range(20, 24):
-            self.assertEquals(True, vdict.get(i).checkpos())
+            self.assertEqual(True, vdict.get(i).checkpos())
 
     def test_center_point(self):
         ga = GraphAlgo()
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A0.json")
-        print("A0: " + str(ga.centerPoint()))
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A1.json")
-        print("A1: " + str(ga.centerPoint()))
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A2.json")
-        print("A2: " + str(ga.centerPoint()))
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A3.json")
-        print("A3: " + str(ga.centerPoint()))
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A4.json")
-        print("A4: " + str(ga.centerPoint()))
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A5.json")
-        print("A5: " + str(ga.centerPoint()))
+        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\1000Nodes.json")
+        print(ga.centerPoint())
+        #
 
     def test_TSP(self):
         ga = GraphAlgo()

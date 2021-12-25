@@ -85,10 +85,17 @@ class DiGraph(GraphInterface):
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         flag = True
         empty = False
-        for coor in pos:
-            if not isinstance(coor, float):
-                flag = False
-        if flag == False and pos[0] is None and pos[1] is None and pos[2] is None:
+        if pos is None:
+            node = Node(node_id)
+            empty = True
+        elif pos[0] is None and pos[1] is None and pos[2] is None:
+            node = Node(node_id)
+            empty = True
+        else:
+            node = Node(node_id, pos[0], pos[1], pos[2])
+        if node.checkpos():
+            flag = True
+        else:
             flag = True
             empty = True
         if flag:
@@ -203,3 +210,14 @@ class DiGraph(GraphInterface):
             if not myoutedges.__eq__(otheroutedges):
                 return False
         return True
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        out = "{"
+        for node in self.nodes.keys():
+            out += str(node) + ": " + str(node) + ": |edges out| " + str(len(self.all_out_edges_of_node(node)))
+            out += " |edges in| " + str(len(self.all_in_edges_of_node(node))) + ", "
+        out += "}"
+        return out

@@ -18,8 +18,7 @@ class GraphObjectsGenerator:
     def generate_nodes(self, count: int):
         nodes = []
         for i in range(count):
-            x, y = random.uniform(0, 10),
-            y = random.uniform(0, 10)
+            x, y = random.uniform(0, 10), random.uniform(0, 10)
             z = random.uniform(0, 10)
             n = Node(i, x, y, z)
             nodes.append(n)

@@ -10,7 +10,6 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from Objects.GraphAlgo import GraphAlgo
 
 
-
 class PMenuBar(tk.Menu):
     def __init__(self, vision: Visual, ws, f: Figure):
         tk.Menu.__init__(self, ws)
@@ -30,8 +29,8 @@ class PMenuBar(tk.Menu):
 
         algo = tk.Menu(self, tearoff=False)
         algo.add_command(label="Center Point", command=self.center)
-        algo.add_command(label="Shortest Path")
-        algo.add_command(label="TSP")
+        algo.add_command(label="Shortest Path", command=self.sp_data)
+        algo.add_command(label="TSP", command=self.tsp_data)
 
         self.add_cascade(label="File", menu=file)
         self.add_cascade(label="Edit Graph", menu=edit)
@@ -148,3 +147,32 @@ class PMenuBar(tk.Menu):
     def draw(self):
         self.f.clear()
         self.canvas.draw_idle()
+
+    def sp_data(self):
+        src = simpledialog.askinteger(title="Source Entry", prompt="Enter the source id")
+        if src not in self.vision.g.nodes.keys():
+            simpledialog.messagebox.showerror(title="Error", message="The key you entered doesn't exist")
+            return
+        dest = simpledialog.askinteger(title="Destenation Entry", prompt="Enter the destenation id")
+        if dest not in self.vision.g.nodes.keys():
+            simpledialog.messagebox.showerror(title="Error", message="The key you entered doesn't exist or"
+                                                                     " The edge already exists")
+            return
+        dist = self.vision.draw_graph_SP(src, dest)
+        simpledialog.messagebox.showinfo(title="Result", message="The shortest distance between " + src + " and "
+                                         + dest + " is " + dist)
+
+    def tsp_data(self):
+        nodes = set()
+        node_lst = []
+        key = 0
+        while key >= 0:
+            key = simpledialog.askinteger(title="Node id entry", prompt="Enter any node id or negative number to end this")
+            if key < 0:
+                break
+            if key in nodes:
+                continue
+            nodes.add(key)
+            node_lst.append(key)
+        dist = self.vision.draw_graph_TSP(node_lst)
+        simpledialog.messagebox.showinfo(title="Result", message="The distance of the path is " + dist)

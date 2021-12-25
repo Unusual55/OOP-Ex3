@@ -89,6 +89,9 @@ class Node:
         ret = "(" + str(self.key) + "): (" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + ")"
         return ret
 
+    def __repr__(self):
+        return self.__str__()
+
     # This functipn get an object and compare it to this Node, if the object is not a node, then we will return
     # False immediately, otherwise we will check if all of the properties are equal, if they are we will return
     # True, otherwise we will return False

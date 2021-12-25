@@ -3,7 +3,7 @@ from Objects.GraphAlgo import GraphAlgo
 from Gui.GuiPanel import GuiPanel
 # def main():
     # ga = GraphAlgo()
-    # ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\Data\\A5.json")
+    # ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\A5.json")
     # vis = Visual(ga.get_graph())
     # # vis.draw_graph()
     # dist, path = ga.shortest_path(1, 13)

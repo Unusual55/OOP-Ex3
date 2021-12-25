@@ -10,7 +10,6 @@ from Gui.PMenuBar import PMenuBar
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-# from matplotlib.figure import Figure
 from matplotlib import style
 from Visual import Visual
 from Objects.DiGraph import DiGraph
@@ -22,10 +21,7 @@ class GuiPanel(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
         self.root = parent
-        # label = tk.Label(self, text="Graph!")
-        # label.pack(pady=10, padx=10, side=tkinter.TOP, fill=tkinter.BOTH)
         self.f = Figure()
-        # a = self.f.add_subplot(111)
         self.vision = Visual(DiGraph(), self.f)
         menubar = PMenuBar(self.vision, self, self.f)
         parent.config(menu=menubar)
