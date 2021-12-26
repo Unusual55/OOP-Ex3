@@ -222,3 +222,9 @@ class DiGraph(GraphInterface):
 
     def __str__(self):
         return "Graph: |V|=" + str(self.nodecouter) + ", |E|=" + str(self.edgecounter)
+
+    def get_all_edges_time_saver(self):
+        ret = dict()
+        for key in self.nodes.keys():
+            ret[key] = self.all_out_edges_of_node(key)
+        return ret

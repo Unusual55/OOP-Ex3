@@ -38,21 +38,39 @@ class TestGraphAlgo(TestCase):
         ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_graph.json")
 
     def test_shortest_path(self):
-        g = DiGraph()
-        g.add_node(0, (0.0, 0.0, 0.0))
-        g.add_node(1, (1.0, 1.0, 1.0))
-        g.add_node(2, (2.0, 2.0, 2.0))
-        g.add_node(3, (3.6, 3.5, 3.75))
-        g.add_edge(0, 1, 1.2)
-        g.add_edge(1, 0, 1.4)
-        g.add_edge(1, 2, 1.5)
-        g.add_edge(2, 1, 2.0)
-        g.add_edge(0, 3, 0.3)
-        g.add_edge(3, 2, 0.7)
-        ga = GraphAlgo(g)
-        ga.shortest_path(0, 2)
-        self.assertEqual((1.0, [0, 3, 2]), ga.shortest_path(0, 2))
-        ga.dijkstra(0)
+
+        # g = DiGraph()
+        # g.add_node(0, (0.0, 0.0, 0.0))
+        # g.add_node(1, (1.0, 1.0, 1.0))
+        # g.add_node(2, (2.0, 2.0, 2.0))
+        # g.add_node(3, (3.6, 3.5, 3.75))
+        # g.add_edge(0, 1, 1.2)
+        # g.add_edge(1, 0, 1.4)
+        # g.add_edge(1, 2, 1.5)
+        # g.add_edge(2, 1, 2.0)
+        # g.add_edge(0, 3, 0.3)
+        # g.add_edge(3, 2, 0.7)
+        # ga = GraphAlgo(g)
+        # ga.shortest_path(0, 2)
+        # self.assertEqual((1.0, [0, 3, 2]), ga.shortest_path(0, 2))
+        # ga.dijkstra(0)
+        # g = DiGraph()  # creates an empty directed graph
+        # for n in range(5):
+        #     g.add_node(n)
+        # g.add_edge(0, 1, 1)
+        # g.add_edge(0, 4, 5)
+        # g.add_edge(1, 0, 1.1)
+        # g.add_edge(1, 2, 1.3)
+        # g.add_edge(1, 3, 1.9)
+        # g.add_edge(2, 3, 1.1)
+        # g.add_edge(3, 4, 2.1)
+        # g.add_edge(4, 2, .5)
+        # g_algo = GraphAlgo(g)
+        # # print(g_algo.centerPoint())
+        # print(g_algo.shortest_path(4, 3))
+        ga = GraphAlgo()
+        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\1000Nodes.json")
+        print(ga.shortest_path(450, 360))
 
     def test_get_graph(self):
         gener = GraphObjectsGenerator()
@@ -84,8 +102,8 @@ class TestGraphAlgo(TestCase):
 
     def test_TSP(self):
         ga = GraphAlgo()
-        #ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\A0.json")
-        #l = [0, 1, 8]
+        # ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\A0.json")
+        # l = [0, 1, 8]
         ga.load_from_json("C:\\Users\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\Data\\1000Nodes.json")
         l = [931, 179, 77, 167, 252, 964, 960, 513, 316, 700, 495, 658, 11, 200, 152, 719, 585, 140]
         out = ga.TSP(l)

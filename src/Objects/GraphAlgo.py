@@ -94,9 +94,8 @@ class GraphAlgo(GraphAlgoInterface):
                 x2, y2 = dnode.get_x(), dnode.get_y()
                 xy, xytext = [x1, y1], [x2, y2]
                 ax.annotate("", xy=xy, xytext=xytext, arrowprops=dict(arrowstyle="<|-", edgecolor='k',
-                                                                           facecolor='r', shrinkA=0, shrinkB=0))
+                                                                      facecolor='r', shrinkA=0, shrinkB=0))
         plt.show()
-
 
     """This function get a string input which represent the path to the json file we would like to load.
     The function will check if the path is valid and the file indeed exist, if it's not, the function won't
@@ -177,9 +176,10 @@ class GraphAlgo(GraphAlgoInterface):
     V is the number of nodes"""
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        if id1 not in self.g.get_all_v() or id2 not in self.g.get_all_v() or id1 == id2:
-            return -1, []
-        dijkstra_output = self.dijkstra(id1)
+        if id1 not in self.g.nodes.keys() or id2 not in self.g.nodes.keys() or id1 == id2:
+            return float('inf'), []
+        edges = self.g.get_all_edges_time_saver()
+        dijkstra_output = self.dijkstra(id1, edges)
         if dijkstra_output == (float('inf'), []):
             return dijkstra_output
         prevs = dijkstra_output[1]
@@ -196,20 +196,21 @@ class GraphAlgo(GraphAlgoInterface):
     case a wanted key is not in the dictionary.
     Time Complexity: O(|E|+|V|log|V|) where E is the number of edges in the graph and V is the number of nodes"""
 
-    def dijkstra(self, src: int):
+    def dijkstra(self, src: int, edges: dict()):
         distance = defaultdict(lambda: float('inf'))
         prev = dict()
         visited = set()
         pq = []
         distance[src] = 0
         heapq.heappush(pq, (0, src))
-        if len(self.g.all_out_edges_of_node(src)) == 0:
+        if len(edges.get(src).keys()) == 0:
             return float('inf'), []
         while pq:
             s = heapq.heappop(pq)
             node, dist = s[1], s[0]
             visited.add(node)
-            for neighbor, weight in self.g.all_out_edges_of_node(node).items():
+            for neighbor, weight in edges.get(node, {}).items():
+            # for neighbor, weight in self.g.all_out_edges_of_node(node).items():
                 if neighbor in visited:
                     continue
                 newdist = dist + weight
@@ -223,19 +224,20 @@ class GraphAlgo(GraphAlgoInterface):
     only the distance dictionary.
     Time Complexity: O(|E|+|V|log|V|) where E is the number of edges in the graph and V is the number of nodes"""
 
-    def dijkstra_distance(self, src: int):
+    def dijkstra_distance(self, src: int, edges: dict()):
         distance = defaultdict(lambda: float('inf'))
         visited = set()
         pq = []
         distance[src] = 0
         heapq.heappush(pq, (0, src))
-        if len(self.g.all_out_edges_of_node(src)) == 0:
+        if len(edges.get(src).keys()) == 0:
             return float('inf'), []
         while pq:
             s = heapq.heappop(pq)
             node, dist = s[1], s[0]
             visited.add(node)
-            for neighbor, weight in self.g.all_out_edges_of_node(node).items():
+            for neighbor, weight in edges.get(node, {}).items():
+            # for neighbor, weight in self.g.all_out_edges_of_node(node).items():
                 if neighbor in visited:
                     continue
                 newdist = dist + weight
@@ -271,15 +273,16 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def centerPoint(self) -> (int, float):
+        edges = self.g.get_all_edges_time_saver()
         nodes = self.g.get_all_v()
         minid = -1
         mindist = float('inf')
         for key in nodes.keys():
             if minid == -1:
                 minid = key
-            dist = self.dijkstra_distance(key)
-            if len(dist) == 2:
-                continue
+            dist = self.dijkstra_distance(key, edges)
+            if len(dist) == 2 or len(dist) < len(nodes.keys()):
+                return None, float('inf')
             vmax = float('-inf')
             for d in dist.values():
                 vmax = max(d, vmax)
@@ -309,9 +312,10 @@ class GraphAlgo(GraphAlgoInterface):
     Time Complexity: O(k^2(|E|+|V|log|V|)+k^3)"""
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
+        edges = self.g.get_all_edges_time_saver()
         dijkstree = dict()
         for i in node_lst:
-            data = self.dijkstra(i)
+            data = self.dijkstra(i, edges)
             data = self.TSP_space_saver(i, set(node_lst), data)
             """In case one or more of the nodes is not in the same strongly connected component"""
             if data.__eq__((-1, [])):
@@ -319,6 +323,7 @@ class GraphAlgo(GraphAlgoInterface):
             dijkstree[i] = data
         best_path = []
         mindist = float('inf')
+        del edges
         for key in node_lst:
             if dijkstree.get(key) == (-1, []):
                 continue
@@ -354,7 +359,8 @@ class GraphAlgo(GraphAlgoInterface):
     the path from current node to the next node and redefine the distance and path dictionary from dijkstree
     so it will suit the next iteration current node
     Time Complexity: O(k^2), where k is the size of the node set"""
-    #TODO: use profiler to improve performance
+
+    # TODO: use profiler to improve performance
     def easy_tsp_v3(self, src: int, node_set: set[int], dijkstree: dict):
         curr, currdist = src, 0
         distance, path = dijkstree.get(curr, ())
@@ -372,7 +378,7 @@ class GraphAlgo(GraphAlgoInterface):
                 if nextnode in distance.keys() and distance.get(nextnode) < currmindist:
                     nextid = nextnode
                     currmindist = distance.get(nextnode)
-            if(nextid == -1):
+            if (nextid == -1):
                 return [], float('inf')
             tspath = self.dijkstra_path(path, curr, nextid)
             if len(tsp_path) > 0 and tspath[0] == tsp_path[-1]:
