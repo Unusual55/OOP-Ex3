@@ -107,6 +107,8 @@ class GraphAlgo(GraphAlgoInterface):
     set the graph as the new graph"""
 
     def load_from_json(self, file_name: str) -> bool:
+        if not file_name.endswith(".json"):
+            file_name += ".json"
         if not Path.exists(Path(file_name)):
             return False
         f = open(file_name)
@@ -277,7 +279,7 @@ class GraphAlgo(GraphAlgoInterface):
                 minid = key
             dist = self.dijkstra_distance(key)
             if len(dist) == 2:
-                return
+                continue
             vmax = float('-inf')
             for d in dist.values():
                 vmax = max(d, vmax)
@@ -313,11 +315,13 @@ class GraphAlgo(GraphAlgoInterface):
             data = self.TSP_space_saver(i, set(node_lst), data)
             """In case one or more of the nodes is not in the same strongly connected component"""
             if data.__eq__((-1, [])):
-                return data
+                print(i)
             dijkstree[i] = data
         best_path = []
         mindist = float('inf')
         for key in node_lst:
+            if dijkstree.get(key) == (-1, []):
+                continue
             tsp_out = self.easy_tsp_v3(key, set(node_lst), dijkstree)
             curr_path = tsp_out[0]
             curr_dist = tsp_out[1]
@@ -335,8 +339,8 @@ class GraphAlgo(GraphAlgoInterface):
         path = data[1]
         newdistance = dict()
         for i in node_set:
-            if i not in distance.keys():
-                return -1, []
+            if path == [] or isinstance(distance, float) or i not in distance.keys():
+                continue
             newdistance[i] = distance.get(i)
         distance = newdistance
         return distance, path
@@ -365,9 +369,11 @@ class GraphAlgo(GraphAlgoInterface):
                     continue
                 if nextid == -1:
                     nextid = nextid
-                if distance.get(nextnode) < currmindist:
+                if nextnode in distance.keys() and distance.get(nextnode) < currmindist:
                     nextid = nextnode
                     currmindist = distance.get(nextnode)
+            if(nextid == -1):
+                return [], float('inf')
             tspath = self.dijkstra_path(path, curr, nextid)
             if len(tsp_path) > 0 and tspath[0] == tsp_path[-1]:
                 tspath.pop(0)

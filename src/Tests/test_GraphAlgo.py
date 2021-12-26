@@ -84,10 +84,10 @@ class TestGraphAlgo(TestCase):
 
     def test_TSP(self):
         ga = GraphAlgo()
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\A0.json")
-        l = [0, 1, 8]
-        # ga.load_from_json("C:\\Users\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\Data\\1000Nodes.json")
-        # l = [931, 179, 77, 167, 252, 964, 960, 513, 316, 700, 495, 658, 11, 200, 152, 719, 585, 140]
+        #ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\A0.json")
+        #l = [0, 1, 8]
+        ga.load_from_json("C:\\Users\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\Data\\1000Nodes.json")
+        l = [931, 179, 77, 167, 252, 964, 960, 513, 316, 700, 495, 658, 11, 200, 152, 719, 585, 140]
         out = ga.TSP(l)
         # self.assertEqual(10408.402683188457, out[1])
         print(out)

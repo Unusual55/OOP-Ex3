@@ -63,9 +63,11 @@ class DiGraph(GraphInterface):
             return False
         if id1 not in self.outEdges.keys():
             self.outEdges[id1] = {}
-        if self.outEdges.get(id1, {}).get(id2) is not None and self.outEdges.get(id1, {}).get(id2) != e:
+        if self.outEdges.get(id1, {}).get(id2) is not None and self.outEdges.get(id1, {}).get(id2) != e:  # TODO:CHECK
             self.edgecounter -= 1
         self.outEdges.get(id1, {})[id2] = e
+        self.nodes.get(id1, Node).out_deg += 1
+        self.nodes.get(id2, Node).in_deg += 1
         if self.inEdges.get(id2) is not None:
             self.inEdges[id2].add_edge(id1)
         else:
@@ -127,6 +129,7 @@ class DiGraph(GraphInterface):
             if removed.getKey() in self.inEdges.keys():
                 for connectedNode in self.inEdges.get(node_id, ReversedEdgesSet):
                     self.outEdges.get(connectedNode, {}).pop(node_id)
+                    self.nodes.get(connectedNode, Node).out_deg -= 1
                     self.edgecounter -= 1
                     if len(self.outEdges.get(connectedNode)) == 0:
                         self.outEdges.pop(connectedNode)
@@ -134,6 +137,7 @@ class DiGraph(GraphInterface):
             if node_id in self.outEdges.keys():
                 for e in self.outEdges.get(node_id, {}).values():
                     self.inEdges.get(e.get_dest(), ReversedEdgesSet).remove_edge(node_id)
+                    self.nodes.get(e.get_dest(), Node).in_deg -= 1
                     self.edgecounter -= 1
                     if len(self.inEdges.get(e.get_dest(), ReversedEdgesSet)) == 0:
                         self.inEdges.pop(e.get_dest())
@@ -158,7 +162,9 @@ class DiGraph(GraphInterface):
         if removed is not None:
             self.edgecounter -= 1
             self.mc += 1
+            self.nodes.get(node_id1, Node).out_deg -= 1
         self.inEdges.get(node_id2, ReversedEdgesSet).remove_edge(node_id1)
+        self.nodes.get(node_id2, Node).in_deg -= 1
         return True
 
     """This function return a dictionary which contain all of the nodes in the graph in the following format:
@@ -215,9 +221,4 @@ class DiGraph(GraphInterface):
         return self.__str__()
 
     def __str__(self):
-        out = "{"
-        for node in self.nodes.keys():
-            out += str(node) + ": " + str(node) + ": |edges out| " + str(len(self.all_out_edges_of_node(node)))
-            out += " |edges in| " + str(len(self.all_in_edges_of_node(node))) + ", "
-        out += "}"
-        return out
+        return "Graph: |V|=" + str(self.nodecouter) + ", |E|=" + str(self.edgecounter)

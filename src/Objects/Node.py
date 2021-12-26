@@ -13,6 +13,8 @@ class Node:
         if len(args) == 4:
             if isinstance(args[0], int):
                 self.key = args[0]
+                self.in_deg = 0
+                self.out_deg = 0
             else:
                 raise Exception("key is not int")
             if isinstance(args[1], float):
@@ -35,6 +37,8 @@ class Node:
                 self.x = None
                 self.y = None
                 self.z = None
+                self.in_deg = 0
+                self.out_deg = 0
             else:
                 raise Exception("The id is not int")
         else:
@@ -86,7 +90,7 @@ class Node:
     # (i): (x, y, z)
     # Where i is the key of the node, and x, y, z is the components in the coordinate vector
     def __str__(self) -> str:
-        ret = "(" + str(self.key) + "): (" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + ")"
+        ret = str(self.key) + ": |edges_out| " + str(self.out_deg) + " |edges in| " + str(self.in_deg)
         return ret
 
     def __repr__(self):
