@@ -4,17 +4,17 @@ from Objects.ReversedEdgesSet import ReversedEdgesSet
 from api.GraphInterface import GraphInterface
 
 """This class represent the directed weighted graph data structure, G=(V, E) where G is graph object, V is the
-vertices, we implemented it as dictionary whrer the key of the node is the key, and it's value is the Node object
+vertices, we implemented it as dictionary where the key of the node is the key, and it's value is the Node object
  that contain both it's key and it's 3 dimensional position. E is the Edges, we implemented it in two different
  stages:
- stage 1- the out edges. by definition, out edge is an edge e=(u,v ) the edge is strating from u and end in v, then
+ stage 1- the out edges. by definition, out edge is an edge e=(u,v ) the edge is starting from u and end in v, then
  we can say e is an out edge of u.
  we created a dictionary where the key is the key of the source node to another dictionary where the key is the
- key of the destenation node and the value is the Edge object.
+ key of the destination node and the value is the Edge object.
  stage 2- the in edges. by definition, in edge is an edge e=(u, v) the edge is ending in v and starting from u, then
- we can say e is an in enge of v.
- we created a dictionary where the key is the key of the destenation node and the value is an ReversedEdgesSet,
- a custom set which we created in order to keep the keys of the source nodes who have out edges to the destenation
+ we can say e is an in eng of v.
+ we created a dictionary where the key is the key of the destination node and the value is an ReversedEdgesSet,
+ a custom set which we created in order to keep the keys of the source nodes who have out edges to the destination
  node. As we said in the documentation of the ReversedEdgesSet class, we decided to implement it that way in order
  to reduce the time complexity of any search, add or remove from the set to O(1), to reduce the space complexity
  by keeping only the keys of the nodes instead of the edges, and of course prevent any case of duplicate edges in
@@ -97,12 +97,12 @@ class DiGraph(GraphInterface):
 
     """This function get an integer input which represent a key of a node we would like to delete. The function will
     proceed to the delete process if and only if the input is a valid key of a node in the graph.
-    Assuming the key is valid, The function will start by removing all of the occurences of the key as destenation
+    Assuming the key is valid, The function will start by removing all of the occurrences of the key as destination
      node by using the set in inEdges while updating the number of edges in each iteration, then we will now remove
-     all of the occurences of the key as source node, using the outEdges and remove them from inEdges while updating
-     the edgecounter.
+     all of the occurrences of the key as source node, using the outEdges and remove them from inEdges while updating
+     the edge-counter.
      The function will also remove any empty dictionary or set. After the function finished to remove the edges, it
-     will update the mc and the nodecounter."""
+     will update the mc and the node counter."""
 
     def remove_node(self, node_id: int) -> bool:
         removed = self.nodes.pop(node_id)
@@ -128,7 +128,7 @@ class DiGraph(GraphInterface):
             return True
         return False
 
-    """This function get two integer inputs which represents the keys of the source and destenation nodes we would
+    """This function get two integer inputs which represents the keys of the source and destination nodes we would
     like to delete the edge between them. The function will remove the edge if and only if the following conditions has
     been met:
     1. Both of the inputs are valid keys of nodes in the graph
@@ -157,7 +157,7 @@ class DiGraph(GraphInterface):
     """This function get an integer input which represent the key of a node we would like to get a dictionary which
     contain it's in edges. The function use the keys in the ReversedEdgesSet to get the needed edges from outEdges
     and return a dictionary which contain the in edges by the following format:
-    dict[key] = weight, where key is the key of the the destenation node and weight is the weight of the edge"""
+    dict[key] = weight, where key is the key of the the destination node and weight is the weight of the edge"""
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         ret = {}
@@ -170,7 +170,7 @@ class DiGraph(GraphInterface):
         return ret
 
     """This function get one integer input which represent the key of a node we would like to get a dictionary which
-     conatin all of the out edges that start from it, the function will return the internal dictionary in outEdges"""
+     contain all of the out edges that start from it, the function will return the internal dictionary in outEdges"""
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         ret = {}

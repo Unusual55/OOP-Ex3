@@ -1,5 +1,5 @@
 """ This class represent a set of integers which represent the set of keys which have an edge
-from them to the key of this set. This object contains a key, which represent the id of it's node and
+from them to the key of this set. This object contains a key, which represent the id of its node and
 a set of integers which contain the keys of the node who have an edge from them to the key node.
 We are using custom set in order to reduce the time complexity of searching, adding or removing nodes
 and edges from the graph, as well as the space complexity, since we are keep only the keys of the nodes
