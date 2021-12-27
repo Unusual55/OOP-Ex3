@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(__file__).rsplit(os.sep, 2)[0])
+
 import tkinter
 from tkinter import *
 import tkinter as tk
@@ -34,5 +38,6 @@ class GuiPanel(tk.Frame):
         toolbar.pack(side=tkinter.BOTTOM, fill=tkinter.BOTH)
 
 
-
-GuiPanel(tk.Tk())
+root = tk.Tk()
+GuiPanel(root)
+root.mainloop()

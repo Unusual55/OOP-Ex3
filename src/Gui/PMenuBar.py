@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(__file__).rsplit(os.sep, 2)[0])
 import tkinter as tk
 from tkinter import ttk as ttk
 from tkinter import simpledialog

@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(__file__).rsplit(os.sep, 2)[0])
 from typing import List
 import matplotlib
 import matplotlib.pyplot as plt
