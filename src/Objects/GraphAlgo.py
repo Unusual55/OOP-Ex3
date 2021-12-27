@@ -136,7 +136,7 @@ class GraphAlgo(GraphAlgoInterface):
         edges = list()
         for node in ndict.values():
             info = {'id': node.getKey()}
-            if node.get_pos() is not None:
+            if node.checkpos():
                 info['pos'] = f"{node.get_x()},{node.get_y()},{node.get_z()}"
             nodes.append(info)
             outlist = self.g.all_out_edges_of_node(node.getKey())
@@ -177,9 +177,9 @@ class GraphAlgo(GraphAlgoInterface):
     case a wanted key is not in the dictionary.
     Time Complexity: O(|E|+|V|log|V|) where E is the number of edges in the graph and V is the number of nodes"""
 
-    def dijkstra(self, src: int, edges: dict()):
+    def dijkstra(self, src: int, edges: dict):
         distance = defaultdict(lambda: float('inf'))
-        prev = dict()
+        prev = {}
         visited = set()
         pq = []
         distance[src] = 0
