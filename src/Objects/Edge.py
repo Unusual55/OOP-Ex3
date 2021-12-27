@@ -3,7 +3,6 @@
      source of the edge and v is the destination of the edge.
      Since the Graph is Directed Weighted Graph, then every edge is unique: (u,v) is different from
      (v,u), and every edge have a weight"""
-import json
 
 
 class Edge:

@@ -1,8 +1,7 @@
-from api.GraphInterface import GraphInterface
 from Objects.Edge import Edge
 from Objects.Node import Node
 from Objects.ReversedEdgesSet import ReversedEdgesSet
-import copy
+from api.GraphInterface import GraphInterface
 
 """This class represent the directed weighted graph data structure, G=(V, E) where G is graph object, V is the
 vertices, we implemented it as dictionary whrer the key of the node is the key, and it's value is the Node object

@@ -1,8 +1,8 @@
 import random
+
+from Objects.DiGraph import DiGraph
 from Objects.Edge import Edge
 from Objects.Node import Node
-from Objects.ReversedEdgesSet import ReversedEdgesSet
-from Objects.DiGraph import DiGraph
 
 
 class GraphObjectsGenerator:

@@ -1,5 +1,5 @@
 import random
-import json
+
 """ This object represent a vertex in the graph. Every vertex has it's own unique id, which we implemented it as
 key and  3 real number coordinates x,y,z which represent it's location in a 3 dimensional space.
 Since we could get a Node who don't have any coordinates, we are using a boolean variable which we call pos in
