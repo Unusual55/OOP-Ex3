@@ -11,18 +11,12 @@ class GraphObjectsGenerator:
 
     def is_finished(self, outdegree: list, indegree: list):
         for i in range(len(outdegree)):
-            if outdegree[i] > 0 and indegree[i] > 0:
+            if (outdegree[i] > 0) and (indegree[i] > 0):
                 return False
         return True
 
     def generate_nodes(self, count: int):
-        nodes = []
-        for i in range(count):
-            x, y = random.uniform(0, 10), random.uniform(0, 10)
-            z = random.uniform(0, 10)
-            n = Node(i, x, y, z)
-            nodes.append(n)
-        return nodes
+        return [Node(i, random.uniform(0, 10), random.uniform(0, 10), random.uniform(0, 10)) for i in range(count)]
 
     def generate_empty_nodes(self, count: int):
         nodes = []

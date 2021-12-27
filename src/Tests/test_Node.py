@@ -76,7 +76,7 @@ class TestNode(TestCase):
 
     def test_str(self):
         n = Node(0, 1.0, 2.5, 3.0)
-        self.assertEquals("(0): (1.0, 2.5, 3.0)", n.__str__())
+        self.assertEqual("(0): (1.0, 2.5, 3.0)", n.__str__())
 
     def test_eq(self):
         n = Node(0, float(1.0), float(2.5), float(3.0))
