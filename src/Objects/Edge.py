@@ -1,7 +1,7 @@
 """ This class represent an edge in the graph. every edge is a unique pair of node's ids which
-    represent the source vertex and the destenation vertex. let e=(u,v) be an edge, then u is the
-     source of the edge and v is the destenation of the edge.
-     Since the Graph is Directed Weighted Graph, then every edge is unique: (u,v) is different than
+    represent the source vertex and the destination vertex. let e=(u,v) be an edge, then u is the
+     source of the edge and v is the destination of the edge.
+     Since the Graph is Directed Weighted Graph, then every edge is unique: (u,v) is different from
      (v,u), and every edge have a weight"""
 import json
 
@@ -16,7 +16,7 @@ class Edge:
     def get_src(self):
         return self.src
 
-    # This function returns the id of the destenation vertex of this Edge
+    # This function returns the id of the destination vertex of this Edge
     def get_dest(self):
         return self.dest
 
@@ -32,12 +32,12 @@ class Edge:
 
     # This function returns a string representation of this edge according to the following format:
     # (u-> v): w
-    # Legend: u is the id of the source vertex, v is the id of the destenation vertex and w is the weight
+    # Legend: u is the id of the source vertex, v is the id of the destination vertex and w is the weight
     def __str__(self):
         return f"({str(self.src)}-> {str(self.dest)}): {str(self.w)}"
 
-    # This function get an object and check if it equals to this edge, if it's not an edge obejct, then
-    # we will return false immediately, if it is an edge, if all of the properties are equal between
+    # This function get an object and check if it equals to this edge, if it's not an edge object, then
+    # we will return false immediately, if it is an edge, if all the properties are equal between
     # other and this edge, then the function will return True, otherwise it will return False
     def __eq__(self, other):
         if not isinstance(other, Edge):
@@ -48,8 +48,8 @@ class Edge:
         return hash(str(self))
 
     def edge_to_dict(self):
-        info = dict()
-        info["src"] = self.src
-        info["w"] = self.w
-        info["dest"] = self.dest
-        return info
+        return {
+            "src": self.src,
+            "w": self.w,
+            "dest": self.dest
+        }
