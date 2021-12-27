@@ -56,14 +56,16 @@ class DiGraph(GraphInterface):
     4. The edge is not in the graph already"""
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if id1 not in self.nodes.keys() or id2 not in self.nodes.keys() or id1 == id2 or weight <= 0 or id1 < 0 or id2 < 0:
+        if (id1 not in self.nodes.keys()) or (id2 not in self.nodes.keys()) or (id1 == id2) or (weight <= 0) or (
+                id1 < 0) or (id2 < 0):
             return False
         e = Edge(id1, id2, weight)
-        if id1 in self.nodes.keys() and id2 in self.nodes.keys() and e in self.outEdges.get(id, {}).values():
+        if (id1 in self.nodes.keys()) and (id2 in self.nodes.keys()) and (e in self.outEdges.get(id, {}).values()):
             return False
         if id1 not in self.outEdges.keys():
             self.outEdges[id1] = {}
-        if self.outEdges.get(id1, {}).get(id2) is not None and self.outEdges.get(id1, {}).get(id2) != e:  # TODO:CHECK
+        if (self.outEdges.get(id1, {}).get(id2) is not None) and (
+                self.outEdges.get(id1, {}).get(id2) != e):  # TODO:CHECK
             self.edgecounter -= 1
         self.outEdges.get(id1, {})[id2] = e
         self.nodes.get(id1, Node).out_deg += 1
@@ -85,34 +87,14 @@ class DiGraph(GraphInterface):
     3. There is no node with the same key in the graph"""
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
-        flag = True
-        empty = False
-        if pos is None:
-            node = Node(node_id)
-            empty = True
-        elif pos[0] is None and pos[1] is None and pos[2] is None:
-            node = Node(node_id)
-            empty = True
-        else:
-            node = Node(node_id, pos[0], pos[1], pos[2])
-        if node.checkpos():
-            flag = True
-        else:
-            flag = True
-            empty = True
-        if flag:
-            if empty:
-                n = Node(node_id)
-            else:
-                n = Node(node_id, pos[0], pos[1], pos[2])
-            if node_id in self.nodes or node_id < 0:
-                return False
-            self.nodes[node_id] = n
-            self.nodecouter += 1
-            self.mc += 1
-            return True
-        else:
+        empty = (pos is None) or (pos == (None, None, None))
+        node = Node(node_id) if empty else Node(node_id, pos[0], pos[1], pos[2])
+        if node_id in self.nodes or node_id < 0:
             return False
+        self.nodes[node_id] = node
+        self.nodecouter += 1
+        self.mc += 1
+        return True
 
     """This function get an integer input which represent a key of a node we would like to delete. The function will
     proceed to the delete process if and only if the input is a valid key of a node in the graph.
@@ -203,17 +185,17 @@ class DiGraph(GraphInterface):
             return False
         mynodes = self.get_all_v()
         othernodes = other.get_all_v()
-        if not mynodes.__eq__(othernodes):
+        if not (mynodes == othernodes):
             return False
         for node in mynodes.values():
             src = node.getKey()
             myinedges = self.all_in_edges_of_node(src)
             otherinedges = other.all_in_edges_of_node(src)
-            if not myinedges.__eq__(otherinedges):
+            if not (myinedges == otherinedges):
                 return False
             myoutedges = self.all_out_edges_of_node(src)
             otheroutedges = self.all_out_edges_of_node(src)
-            if not myoutedges.__eq__(otheroutedges):
+            if not (myoutedges == otheroutedges):
                 return False
         return True
 
@@ -224,7 +206,8 @@ class DiGraph(GraphInterface):
         return "Graph: |V|=" + str(self.nodecouter) + ", |E|=" + str(self.edgecounter)
 
     def get_all_edges_time_saver(self):
-        ret = dict()
-        for key in self.nodes.keys():
-            ret[key] = self.all_out_edges_of_node(key)
+        ret = {key: self.all_out_edges_of_node(key) for key in self.nodes.keys()}
+        # ret = dict()
+        # for key in self.nodes.keys():
+        #     ret[key] = self.all_out_edges_of_node(key)
         return ret

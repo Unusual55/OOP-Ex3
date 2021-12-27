@@ -34,7 +34,7 @@ class Edge:
     # (u-> v): w
     # Legend: u is the id of the source vertex, v is the id of the destenation vertex and w is the weight
     def __str__(self):
-        return "(" + str(self.src) + "-> " + str(self.dest) + "): " + str(self.w)
+        return f"({str(self.src)}-> {str(self.dest)}): {str(self.w)}"
 
     # This function get an object and check if it equals to this edge, if it's not an edge obejct, then
     # we will return false immediately, if it is an edge, if all of the properties are equal between
