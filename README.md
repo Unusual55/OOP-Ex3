@@ -49,6 +49,8 @@ For more information and details about the structure and background of the proje
 
 ## Comparison and Stats
 
+These results ran on a laptop with the following CPU: AMD Ryzen 5 3500U with Radeon Vega Mobile Gfx (8 CPUs), ~2.1 GHz, 12 GB RAM.
+
 ### Shortest Path
 
 ![Shortest Path Graph](./media/SHORTESTPATH_SMALLGRAPHS.png)
@@ -63,3 +65,8 @@ For more information and details about the structure and background of the proje
 
 ### Results
 
+Some graphs may be misleading since the in the larger graphs that are not shown in the images above, the algorithm is taking much longer to run in Python than in Java.
+You can see the more detailed results in the file [Comparison Excel file](https://github.com/Unusual55/OOP-Ex3/blob/main/media/Comparison.xlsx).
+
+In the smaller graphs Python seems to be faster than Java, 
+but when the graphs are larger the difference is much more profound in the way that Java is more consistent.
