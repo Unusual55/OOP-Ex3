@@ -46,3 +46,20 @@ python path/to/Gui/folder/GuiPanel.py
 ## Documentation
 
 For more information and details about the structure and background of the project please refer to the [Wiki Pages](../../wiki).
+
+## Comparison and Stats
+
+### Shortest Path
+
+![Shortest Path Graph](./media/SHORTESTPATH_SMALLGRAPHS.png)
+
+### Centre
+
+![Centre Graph](./media/CENTRE_SMALLGRAPHS.png)
+
+### TSP
+
+![TSP Graph](./media/TSP_SMALLGRAPHS.png)
+
+### Results
+
