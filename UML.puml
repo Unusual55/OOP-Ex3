@@ -1,0 +1,161 @@
+@startuml
+
+interface GraphInterface{
++v_size(): int
++e_size(): int
+get_all_v(): dict
++all_in_edges_of_node(int): dict
++all_out_edges_of_node(int): dict
++get_mc(): int
++add_edge(int, int, float): bool
++add_node(int, tuple): bool
++remove_edge(int, int): bool
++remove_node(int): bool
+}
+
+interface GraphAlgoInterface{
++getGraph(): GraphInterface
++shortest_path(int, int): float, list
++centerPoint(): int, float
++TSP(list<int>): list[int], float
++plot_graph: None
++save_to_json(str): bool
++load_from_json(str): bool
+}
+
+class Node{
+-key: int
++in_deg: int
++out_deg: int
++x: float
++y: float
++z: float
++pos: bool
++getKey(): int
++checkpos(): bool
++getpos(): tuple
++setpos(float, float, float): None
++setlimitedrandompos(float, float, float, float, float, float): None
++str(): str
++repr(): str
++distance(Node): float
++get_x(): float
++get_y(): float
++get_z(): float
++hash(): int
++node_to_dict(): dict
++eq(Node): bool
+}
+
+class Edge{
+-src: int
+-dest: int
+-weight: float
++get_src(): int
++get_dest(): int
++get_weight(): float
++repr(): str
++str(): str
++eq(Object): bool
++hash(): int
++edge_to_dict(): dict
+}
+
+class ReversedEdgesSet{
++set: set
++add_edge(int): None
++remove_edge(int): None
++contains_edge(int): bool
++get_keys(): set
++clear_keys(): None
++iter(): None
+}
+
+class DiGraph implements GraphInterface{
++nodes: dict
++outEdges: dict
++inEdges: dict
++nodecounter: int
++edgecounter: int
++mc: int+v_size(): int
++e_size(): int
+get_all_v(): dict
++all_in_edges_of_node(int): dict
++all_out_edges_of_node(int): dict
++get_mc(): int
++add_edge(int, int, float): bool
++add_node(int, tuple): bool
++remove_edge(int, int): bool
++remove_node(int): bool
++eq(Object): bool
++repr(): str
++str(): str
++get_all_edges_time_saver(): dict
+}
+
+class GraphAlgo implements GraphAlgoInterface{
+-g: DiGraph
++getGraph(): GraphInterface
++shortest_path(int, int): float, list
++centerPoint(): int, float
++TSP(list<int>): list[int], float
++plot_graph: None
++save_to_json(str): bool
++load_from_json(str): bool
++dijkstra(int, dict): dict, dict
++dijkstra_distance(int, dict): dict
++dijkstra_path(dict, int, int) -> list:
++TSP_space_saver(int, set, dict): dict, dict
++easy_tsp_v3(int, set, dict): list[int], float
+}
+
+class GuiPanel{
++root: Tk
++f: Figure
++vision: Visual
++menubar: PMenuBar
++canvas: FigureCanvasTkAgg
++toolbar: NavigationToolbar2Tk
+}
+
+class PMenuBar{
++g: DiGraph
++f: Figure
++vision: Vision
++ws: Tk
++load_graph(): None
++save_graph(): None
++new_graph(): None
++center(): None
++add_node(): None
++add_edge(): None
++remove_edge(): None
++remove_node(): None
++sp_data(): None
++tsp_data(): None
+}
+
+class Visual{
++fig: Figure
++g: DiGraph
++ax: subplot
++edgestack: list
++click: event
++pick: event
++on_pick(event): None
++on_press(event): None
++set bbox(): None
++bbox_update(): None
++draw_graph(): None
++draw_graph_center(): int
++draw_graph_SP(int, int): float
++draw_graph_TSP(list[int]): float
++add_node(int, tuple): None
++add_edge(int, int, float): None
++remove_node(int): None
++remove_edge(int, int): None
++add_node_by_click(): int
+}
+
+
+@enduml

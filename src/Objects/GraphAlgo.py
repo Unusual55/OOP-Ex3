@@ -1,20 +1,15 @@
-from typing import List
-# from Objects.Edge import Edge
-from Objects.Node import Node
-# from Objects.ReversedEdgesSet import ReversedEdgesSet
-from Objects.DiGraph import DiGraph
-from api.GraphInterface import GraphInterface
-from api.GraphAlgoInterface import GraphAlgoInterface
-import json
-# import pandas as pd
-# import numpy as np
-from pathlib import Path
-from collections import defaultdict
-# from heapq import *
 import heapq
+import json
 from collections import defaultdict
-from matplotlib.pyplot import Figure
+from pathlib import Path
+from typing import List
+
 import matplotlib.pyplot as plt
+
+from Objects.DiGraph import DiGraph
+from Objects.Node import Node
+from api.GraphAlgoInterface import GraphAlgoInterface
+from api.GraphInterface import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -36,10 +31,8 @@ class GraphAlgo(GraphAlgoInterface):
                         for dest in outedges.values():
                             self.g.add_edge(node.getKey(), dest, outedges.get(dest))
                     return
-                else:
-                    continue
 
-    """"The fucntion will return it's current graph"""
+    """"The function will return it's current graph"""
 
     def get_graph(self) -> GraphInterface:
         return self.g
@@ -47,7 +40,7 @@ class GraphAlgo(GraphAlgoInterface):
     """Note: The graph might include few nodes who doesn't have a position, we can see that more easily in
     Node class and in the json files.
     This function calculates the 3d bounds of the graph, the minimal and maximal x, y, z values.
-    After the calulations is finished, the function will look for any node in the graph who doesn't have a
+    After the calculations is finished, the function will look for any node in the graph who doesn't have a
     position, an empty node, and randomize x, y, z float values between the minimum and the maximal values."""
 
     def plot_graph(self) -> None:
@@ -66,23 +59,18 @@ class GraphAlgo(GraphAlgoInterface):
                 min_z, max_z = min(min_z, node.get_z()), max(max_z, node.get_z())
             else:
                 keys.add(node.getKey())
-        minfinity = min_x == float('inf') and min_y == float('inf') and min_z == float('inf')
-        maxfinity = max_x == float('-inf') and max_y == float('-inf') and max_z == float('-inf')
+        minfinity = (min_x == float('inf')) and (min_y == float('inf')) and (min_z == float('inf'))
+        maxfinity = (max_x == float('-inf')) and (max_y == float('-inf')) and (max_z == float('-inf'))
+        if minfinity or maxfinity:
+            min_x, min_y, min_z = 0, 0, 0
+            max_x, max_y, max_z = 10, 10, 10
         for i in keys:
-            if not minfinity and not maxfinity:
-                self.g.nodes.get(i, Node).setlimitedrandompos(minx=min_x, miny=min_y, minz=min_z,
-                                                              maxx=max_x, maxy=max_y, maxz=max_z)
-                node = self.g.nodes.get(i, Node)
-                xlist.append(node.get_x())
-                ylist.append(node.get_y())
-            else:
-                min_x, min_y, min_z = 0, 0, 0
-                max_x, max_y, max_z = 10, 10, 10
-                self.g.nodes.get(i, Node).setlimitedrandompos(minx=min_x, miny=min_y, minz=min_z,
-                                                              maxx=max_x, maxy=max_y, maxz=max_z)
-                node = self.g.nodes.get(i, Node)
-                xlist.append(node.get_x())
-                ylist.append(node.get_y())
+            self.g.nodes.get(i, Node).setlimitedrandompos(minx=min_x, miny=min_y, minz=min_z,
+                                                          maxx=max_x, maxy=max_y, maxz=max_z)
+            node = self.g.nodes.get(i, Node)
+            xlist.append(node.get_x())
+            ylist.append(node.get_y())
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.scatter(xlist, ylist, c='b')
@@ -110,36 +98,31 @@ class GraphAlgo(GraphAlgoInterface):
             file_name += ".json"
         if not Path.exists(Path(file_name)):
             return False
-        f = open(file_name)
-        data = json.load(f)
-        nodedata = data.get("Nodes")
-        edgedata = data.get("Edges")
-        loadgraph = DiGraph()
-        for n in nodedata:
-            if len(n) == 1:
-                loadgraph.add_node(n.get("id"), (None, None, None))
-            elif len(n) == 2:
-                key = n.get("id")
-                postr = str(n.get("pos"))
-                splitted = postr.split(',')
-                x = float(splitted[0])
-                y = float(splitted[1])
-                z = float(splitted[2])
-                loadgraph.add_node(key, (x, y, z))
-        for e in edgedata:
-            src = e.get("src")
-            w = e.get("w")
-            dest = e.get("dest")
-            loadgraph.add_edge(src, dest, w)
-        self.g = loadgraph
-        f.close()
+        with open(file_name, 'r') as f:
+            data = json.load(f)
+            nodedata = data.get("Nodes")
+            edgedata = data.get("Edges")
+            loadgraph = DiGraph()
+            for n in nodedata:
+                if len(n) > 0:
+                    pos = (None, None, None)
+                    if len(n) == 2:
+                        splitted = str(n.get("pos")).split(',')
+                        pos = (float(splitted[0]), float(splitted[1]), float(splitted[2]))
+                    loadgraph.add_node(n.get("id"), pos)
+            for e in edgedata:
+                src = e.get("src")
+                w = e.get("w")
+                dest = e.get("dest")
+                loadgraph.add_edge(src, dest, w)
+            self.g = loadgraph
         return True
 
     """This function get a string input which represent the path for the new json file we would like to save.
     in case the path doesn't end with .json, which means it will be regular text file, the function will add the .json
     suffix to the path. The function will use the node dictionary function of DiGraph in order to get all of the nodes,
     and by using their keys we will also get their out edges.
-    The function deal with regular and empty nodes in seperate ways, for regular nodes we will keep both id and position
+    The function deal with regular and empty nodes in separate ways, for regular nodes we will keep both id and position
     and for empty node we will keep only the id, by doing that the function can save both type of nodes to the same
     json file.
     Note: empty node is a node who doesn't have a position."""
@@ -152,11 +135,10 @@ class GraphAlgo(GraphAlgoInterface):
         ndict = self.g.get_all_v()
         edges = list()
         for node in ndict.values():
+            info = {'id': node.getKey()}
             if node.checkpos():
-                pos = str(node.get_x()) + "," + str(node.get_y()) + "," + str(node.get_z())
-                nodes.append({'id': node.getKey(), 'pos': pos})
-            else:
-                nodes.append({'id': node.getKey()})
+                info['pos'] = f"{node.get_x()},{node.get_y()},{node.get_z()}"
+            nodes.append(info)
             outlist = self.g.all_out_edges_of_node(node.getKey())
             for dest in outlist.keys():
                 src = node.getKey()
@@ -165,7 +147,7 @@ class GraphAlgo(GraphAlgoInterface):
         data["Nodes"] = nodes
         data["Edges"] = edges
         with open(file_name, 'w') as fp:
-            json.dump(data, fp, indent=4, )
+            json.dump(data, fp, indent=4)
 
     """The function get two function which represent two vertices in the graph which we would like to
     calculate and return the shortest distance and the shortest path between them.
@@ -176,7 +158,7 @@ class GraphAlgo(GraphAlgoInterface):
     V is the number of nodes"""
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        if id1 not in self.g.nodes.keys() or id2 not in self.g.nodes.keys() or id1 == id2:
+        if (id1 not in self.g.nodes.keys()) or (id2 not in self.g.nodes.keys()) or (id1 == id2):
             return float('inf'), []
         edges = self.g.get_all_edges_time_saver()
         dijkstra_output = self.dijkstra(id1, edges)
@@ -187,7 +169,6 @@ class GraphAlgo(GraphAlgoInterface):
         if id2 not in dists:
             return float('inf'), []
         distance = dists.get(id2)
-        path = []
         path = self.dijkstra_path(prevs, id1, id2)
         return distance, path
 
@@ -196,9 +177,9 @@ class GraphAlgo(GraphAlgoInterface):
     case a wanted key is not in the dictionary.
     Time Complexity: O(|E|+|V|log|V|) where E is the number of edges in the graph and V is the number of nodes"""
 
-    def dijkstra(self, src: int, edges: dict()):
+    def dijkstra(self, src: int, edges: dict):
         distance = defaultdict(lambda: float('inf'))
-        prev = dict()
+        prev = {}
         visited = set()
         pq = []
         distance[src] = 0
@@ -210,7 +191,7 @@ class GraphAlgo(GraphAlgoInterface):
             node, dist = s[1], s[0]
             visited.add(node)
             for neighbor, weight in edges.get(node, {}).items():
-            # for neighbor, weight in self.g.all_out_edges_of_node(node).items():
+                # for neighbor, weight in self.g.all_out_edges_of_node(node).items():
                 if neighbor in visited:
                     continue
                 newdist = dist + weight
@@ -237,7 +218,7 @@ class GraphAlgo(GraphAlgoInterface):
             node, dist = s[1], s[0]
             visited.add(node)
             for neighbor, weight in edges.get(node, {}).items():
-            # for neighbor, weight in self.g.all_out_edges_of_node(node).items():
+                # for neighbor, weight in self.g.all_out_edges_of_node(node).items():
                 if neighbor in visited:
                     continue
                 newdist = dist + weight

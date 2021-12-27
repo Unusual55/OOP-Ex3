@@ -19,14 +19,14 @@ class TestGraphAlgo(TestCase):
         gener = GraphObjectsGenerator()
         g = gener.generate_graph(20, 0)
         ga = GraphAlgo(g)
-        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_graph")
+        ga.save_to_json("./data/my_graph")
         emptynodes = gener.generate_empty_nodes(5)
         i = 0
         for empty in emptynodes:
             g.add_node(20 + i, empty)
             i += 1
         ga.g = g
-        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_NoneIncluded_graph")
+        ga.save_to_json("./data/my_NoneIncluded_graph")
         emptygraph = DiGraph()
         emptygraphnodes = gener.generate_empty_nodes(50)
         i = 0
@@ -34,8 +34,8 @@ class TestGraphAlgo(TestCase):
             emptygraph.add_node(i, e)
             i += 1
         ga.g = emptygraph
-        ga.save_to_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_empty_graph")
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\my_graph.json")
+        ga.save_to_json("./data/my_empty_graph")
+        ga.load_from_json("./data/my_graph.json")
 
     def test_shortest_path(self):
 
@@ -69,7 +69,7 @@ class TestGraphAlgo(TestCase):
         # # print(g_algo.centerPoint())
         # print(g_algo.shortest_path(4, 3))
         ga = GraphAlgo()
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\1000Nodes.json")
+        ga.load_from_json("./data/1000Nodes.json")
         print(ga.shortest_path(450, 360))
 
     def test_get_graph(self):
@@ -96,15 +96,15 @@ class TestGraphAlgo(TestCase):
 
     def test_center_point(self):
         ga = GraphAlgo()
-        ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\1000Nodes.json")
+        ga.load_from_json("./data/1000Nodes.json")
         print(ga.centerPoint())
         #
 
     def test_TSP(self):
         ga = GraphAlgo()
-        # ga.load_from_json("C:\\Users\\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\\data\\A0.json")
+        # ga.load_from_json("./data/A0.json")
         # l = [0, 1, 8]
-        ga.load_from_json("C:\\Users\ofrit\\PycharmProjects\\Ex3\\OOP-Ex3\\src\Data\\1000Nodes.json")
+        ga.load_from_json("./data/1000Nodes.json")
         l = [931, 179, 77, 167, 252, 964, 960, 513, 316, 700, 495, 658, 11, 200, 152, 719, 585, 140]
         out = ga.TSP(l)
         # self.assertEqual(10408.402683188457, out[1])

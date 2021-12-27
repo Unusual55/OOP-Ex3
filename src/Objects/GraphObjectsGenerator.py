@@ -1,8 +1,8 @@
 import random
+
+from Objects.DiGraph import DiGraph
 from Objects.Edge import Edge
 from Objects.Node import Node
-from Objects.ReversedEdgesSet import ReversedEdgesSet
-from Objects.DiGraph import DiGraph
 
 
 class GraphObjectsGenerator:
@@ -11,50 +11,36 @@ class GraphObjectsGenerator:
 
     def is_finished(self, outdegree: list, indegree: list):
         for i in range(len(outdegree)):
-            if outdegree[i] > 0 and indegree[i] > 0:
+            if (outdegree[i] > 0) and (indegree[i] > 0):
                 return False
         return True
 
     def generate_nodes(self, count: int):
-        nodes = []
-        for i in range(count):
-            x, y = random.uniform(0, 10), random.uniform(0, 10)
-            z = random.uniform(0, 10)
-            n = Node(i, x, y, z)
-            nodes.append(n)
-        return nodes
+        return [Node(i, random.uniform(0, 10), random.uniform(0, 10), random.uniform(0, 10)) for i in range(count)]
 
     def generate_empty_nodes(self, count: int):
-        nodes = []
-        for i in range(count):
-            nodes.append((None, None, None))
-        return nodes
+        return [(None, None, None)] * count
 
     def generate_graph(self, nodecount: int, avgdegree: int):
         nodes = self.generate_nodes(nodecount)
         edges = set()
-        indegree = []
-        outdegree = []
-        for i in range(nodecount):
-            inrank = random.randint(2, 5)
-            outrank = 10 - inrank
-            indegree.append(inrank)
-            outdegree.append(outrank)
+        indegree = [random.randint(2, 5) for _ in range(nodecount)]
+        outdegree = [10 - i for i in indegree]
         flag = False
         while not flag:
             src = random.randint(0, nodecount - 1)
             dest = random.randint(0, nodecount - 1)
             failedsrc = set()
-            while outdegree[src] == 0 and len(failedsrc) <= nodecount - 1:
+            while (outdegree[src] == 0) and (len(failedsrc) <= nodecount - 1):
                 failedsrc.add(src)
                 src = random.randint(0, nodecount - 1)
                 if src in failedsrc:
                     continue
             faileddest = set()
-            while indegree[dest] == 0 and len(faileddest) <= nodecount - 1:
+            while (indegree[dest] == 0) and (len(faileddest) <= nodecount - 1):
                 faileddest.add(dest)
                 dest = random.randint(0, nodecount - 1)
-                if dest in faileddest or src == dest:
+                if (dest in faileddest) or (src == dest):
                     continue
                 continue
             e = Edge(src, dest, nodes[src].distance(nodes[dest]))
@@ -73,28 +59,23 @@ class GraphObjectsGenerator:
     def generate_large_graph(self, nodecount: int):
         nodes = self.generate_nodes(nodecount)
         edges = set()
-        indegree = []
-        outdegree = []
-        for i in range(nodecount):
-            inrank = random.randint(4, 10)
-            outrank = 20 - inrank
-            indegree.append(inrank)
-            outdegree.append(outrank)
+        indegree = [random.randint(4, 10) for _ in range(nodecount)]
+        outdegree = [20 - i for i in indegree]
         flag = False
         while not flag:
             src = random.randint(0, nodecount - 1)
             dest = random.randint(0, nodecount - 1)
             failedsrc = set()
-            while outdegree[src] == 0 and len(failedsrc) <= nodecount - 1:
+            while (outdegree[src] == 0) and (len(failedsrc) <= nodecount - 1):
                 failedsrc.add(src)
                 src = random.randint(0, nodecount - 1)
                 if src in failedsrc:
                     continue
             faileddest = set()
-            while indegree[dest] == 0 and len(faileddest) <= nodecount - 1:
+            while (indegree[dest] == 0) and (len(faileddest) <= nodecount - 1):
                 faileddest.add(dest)
                 dest = random.randint(0, nodecount - 1)
-                if dest in faileddest or src == dest:
+                if (dest in faileddest) or (src == dest):
                     continue
                 continue
             e = Edge(src, dest, nodes[src].distance(nodes[dest]))
