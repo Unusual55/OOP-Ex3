@@ -181,8 +181,9 @@ class DiGraph(GraphInterface):
                 ret[id2] = self.outEdges.get(id1, {}).get(id2, Edge).get_weight()
         return ret
 
-     """ This function ger an object which inherited from GraphInterface and compare it to this DiGraph, and return True if they are equal, otherwise false. """
-     
+    """This function ger an object which inherited from GraphInterface and compare it to this DiGraph, and return 
+    True if they are equal, otherwise false. """
+
     def __eq__(self, other):
         if not isinstance(other, GraphInterface):
             return False
@@ -202,20 +203,20 @@ class DiGraph(GraphInterface):
                 return False
         return True
 
-       """ This function returns a string representation of this graph """
-       
+    """ This function returns a string representation of this graph """
+
     def __repr__(self):
         return self.__str__()
 
-     """This function returns a string representation of this graph """
-     
+    """This function returns a string representation of this graph """
+
     def __str__(self):
         return "Graph: |V|=" + str(self.nodecouter) + ", |E|=" + str(self.edgecounter)
 
-     """ This function return a dictionary of dictionaries of every out edges of every node. This function whole meaning is to reduce the time complexity of the algorithms
-     by reducing the times we call all_out_edges_of_node() and by that reducing the time complexity of the algoritmhs. We decided to use it after profile the algorithms and
-     realized that the function took most of the runtime since we called it alot of times."""
-     
+    """ This function return a dictionary of dictionaries of every out edges of every node. This function whole meaning is to reduce the time complexity of the algorithms
+    by reducing the times we call all_out_edges_of_node() and by that reducing the time complexity of the algoritmhs. We decided to use it after profile the algorithms and
+    realized that the function took most of the runtime since we called it alot of times."""
+
     def get_all_edges_time_saver(self):
         ret = {key: self.all_out_edges_of_node(key).copy() for key in self.nodes.keys()}
         # ret = dict()

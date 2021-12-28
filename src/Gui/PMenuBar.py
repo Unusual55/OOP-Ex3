@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.insert(0, os.path.abspath(__file__).rsplit(os.sep, 2)[0])
 import tkinter as tk
 from tkinter import ttk as ttk
@@ -12,9 +13,9 @@ from Visual import Visual
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from Objects.GraphAlgo import GraphAlgo
 
-
 """ This class represents the controller behind the menubar in out GUI. In this class we create the menubar, add its sub-menus and menum items, and of course trigger the 
 events which control the visual graph."""
+
 
 class PMenuBar(tk.Menu):
     def __init__(self, vision: Visual, ws, f: Figure):
@@ -42,8 +43,8 @@ class PMenuBar(tk.Menu):
         self.add_cascade(label="Edit Graph", menu=edit)
         self.add_cascade(label="Algorithms", menu=algo)
 
-    """ This function allow us to use file chooser in order to load a json file into graph. """    
-        
+    """ This function allow us to use file chooser in order to load a json file into graph. """
+
     def load_graph(self):
         ga = GraphAlgo()
         path = askopenfilename()
@@ -64,8 +65,9 @@ class PMenuBar(tk.Menu):
             b1.pack()
             popup.mainloop()
 
-     """ This function allow us to save our graph into .json file using a file saver and of course out save_to_json function """
-            
+    """This function allow us to save our graph into .json file using a file saver and of course out save_to_json 
+    function """
+
     def save_graph(self):
         g = self.vision.g
         ga = GraphAlgo(g)
@@ -93,14 +95,14 @@ class PMenuBar(tk.Menu):
             popup.mainloop()
 
     """ This function resets the graph """
-            
+
     def new_graph(self):
         self.vision.g = DiGraph()
         self.vision.ax.clear()
         self.vision.draw_graph()
 
     """ This function will trigger center algorithm on the grpah """
-        
+
     def center(self):
         key = self.vision.draw_graph_center()
         popup = tk.Tk()
@@ -114,7 +116,7 @@ class PMenuBar(tk.Menu):
         popup.mainloop()
 
     """ This function will trigger an add node user input """
-        
+
     def add_node(self):
         key = simpledialog.askinteger(title="Id Entry", prompt="Enter the key of the node", )
         if key < 0 or key in self.vision.g.nodes.keys():
@@ -127,7 +129,7 @@ class PMenuBar(tk.Menu):
         self.vision.add_node(key, (x, y, z))
 
     """ This function will trigger an add edge use input """
-        
+
     def add_edge(self):
         src = simpledialog.askinteger(title="Source Entry", prompt="Enter the source id")
         if src not in self.vision.g.nodes.keys():
@@ -145,7 +147,7 @@ class PMenuBar(tk.Menu):
         self.vision.add_edge(src, dest, w)
 
     """ This function will trigger remove node user input"""
-        
+
     def remove_node(self):
         key = simpledialog.askinteger(title="Id Entry", prompt="Enter the id of the node you would like"
                                                                " to remove")
@@ -153,7 +155,7 @@ class PMenuBar(tk.Menu):
             self.vision.remove_node(key)
 
     """ This function will trigger remove edge user input"""
-            
+
     def remove_edge(self):
         src = simpledialog.askinteger(title="Source Entry", prompt="Enter the source id")
         if src not in self.vision.g.nodes.keys():
@@ -171,7 +173,7 @@ class PMenuBar(tk.Menu):
         self.canvas.draw_idle()
 
     """ This function will trigger shortest path user input and then run the algorithms on the graph"""
-        
+
     def sp_data(self):
         src = simpledialog.askinteger(title="Source Entry", prompt="Enter the source id")
         if src not in self.vision.g.nodes.keys():
@@ -184,16 +186,17 @@ class PMenuBar(tk.Menu):
             return
         dist = self.vision.draw_graph_SP(src, dest)
         simpledialog.messagebox.showinfo(title="Result", message="The shortest distance between " + src + " and "
-                                         + dest + " is " + dist)
+                                                                 + dest + " is " + dist)
 
     """ This function will trigger shortest path user input and then run the algorithms on the graph"""
-        
+
     def tsp_data(self):
         nodes = set()
         node_lst = []
         key = 0
         while key >= 0:
-            key = simpledialog.askinteger(title="Node id entry", prompt="Enter any node id or negative number to end this")
+            key = simpledialog.askinteger(title="Node id entry",
+                                          prompt="Enter any node id or negative number to end this")
             if key < 0:
                 break
             if key in nodes:

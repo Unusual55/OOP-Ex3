@@ -42,6 +42,6 @@ class ReversedEdgesSet:
     def __len__(self):
         return len(self.set)
 
-     # This function allow us to iterate over the ReversedEdgesSet
+    # This function allow us to iterate over the ReversedEdgesSet
     def __iter__(self):
         return iter(self.set)

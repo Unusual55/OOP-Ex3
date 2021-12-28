@@ -9,7 +9,7 @@ class TestNode(TestCase):
         for i in range(20):
             nodes.append(Node(i))
         for i in range(20):
-            self.assertEquals(i, nodes[i].getKey())
+            self.assertEqual(i, nodes[i].getKey())
 
     def test_checkpos(self):
         nodes = []
@@ -37,28 +37,28 @@ class TestNode(TestCase):
                 nodes.append(n)
         for i in range(20):
             if not nodes[i].checkpos():
-                self.assertEquals((None, None, None), nodes[i].getpos())
+                self.assertEqual((None, None, None), nodes[i].getpos())
             else:
                 ni = nodes[i]
                 tup = (ni.x, ni.y, ni.z)
-                self.assertEquals(tup, nodes[i].getpos())
-                self.assertEquals(tup[0], nodes[i].get_x())
-                self.assertEquals(tup[1], nodes[i].get_y())
-                self.assertEquals(tup[2], nodes[i].get_z())
+                self.assertEqual(tup, nodes[i].getpos())
+                self.assertEqual(tup[0], nodes[i].get_x())
+                self.assertEqual(tup[1], nodes[i].get_y())
+                self.assertEqual(tup[2], nodes[i].get_z())
 
     def test_setpos(self):
         n = Node(0)
-        self.assertEquals(False, n.checkpos())
+        self.assertEqual(False, n.checkpos())
         n.setpos(1, 3, 6)
-        self.assertEquals(True, n.checkpos())
-        self.assertEquals((1, 3, 6), n.getpos())
+        self.assertEqual(True, n.checkpos())
+        self.assertEqual((1, 3, 6), n.getpos())
 
     def test_setlimitedrandompos(self):
 
         n = Node(0)
-        self.assertEquals(False, n.checkpos())
+        self.assertEqual(False, n.checkpos())
         n.setlimitedrandompos(0, 0, 0, 10, 10, 10)
-        self.assertEquals(True, n.checkpos())
+        self.assertEqual(True, n.checkpos())
 
     def test_distance(self):
         nodes = []

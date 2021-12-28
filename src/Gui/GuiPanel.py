@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.insert(0, os.path.abspath(__file__).rsplit(os.sep, 2)[0])
 
 import tkinter
@@ -20,8 +21,8 @@ from Objects.DiGraph import DiGraph
 
 style.use("ggplot")
 
-
 """ This class represents the GUI panel, in this class we embedded the matplotlib into tkinter."""
+
 
 class GuiPanel(tk.Frame):
     def __init__(self, parent):
