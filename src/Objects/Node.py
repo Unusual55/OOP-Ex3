@@ -110,10 +110,12 @@ class Node:
     # This function return the Z value of the node
     def get_z(self):
         return self.z if self.pos else None
-
+    
+    # This function allow us to hash Node object.
     def __hash__(self):
         return hash(str(self))
-
+    
+    # This function a dictionary which we can use in order to save the Node to .json object
     def node_to_dict(self):
         info = {
             "id": self.key
