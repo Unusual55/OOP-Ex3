@@ -42,10 +42,12 @@ class Edge:
         if not isinstance(other, Edge):
             return False
         return (other.src == self.src) and (other.dest == self.dest) and (other.w == self.w)
-
+    
+    # This function allow us to hash the Edge object
     def __hash__(self):
         return hash(str(self))
 
+    # This function return a dictionary which contains the information of the edge in order to save it to .json
     def edge_to_dict(self):
         return {
             "src": self.src,
